@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Billing</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<script>
+if(!localStorage.getItem('role')){
+window.location.href='login.html';
+}
+</script>
+
+
+<h1>Restaurant Billing System</h1>
+<p>Logged in as: <b id="roleText"></b></p>
+<button onclick="logout()">Logout</button>
+
+
+<div class="container">
+<div class="box">
+<h2>Menu</h2>
+<ul id="menuList"></ul>
+<input id="itemName" placeholder="Item Name">
+<input id="itemPrice" type="number" placeholder="Price">
+<button onclick="addItem()">Add Item</button>
+</div>
+
+
+<div class="box">
+<h2>Cart</h2>
+<ul id="cartList"></ul>
+<label>GST % <input id="gst" type="number" value="5"></label><br>
+<button onclick="checkout()">Checkout</button>
+<p id="total"></p>
+</div>
+</div>
+
+
+<hr>
+<h2>Dashboard</h2>
+<select onchange="filterSales(this.value)">
+<option value="daily">Daily</option>
+<option value="monthly">Monthly</option>
+<option value="yearly">Yearly</option>
+</select>
+<p id="dashboard"></p>
+
+
+<script src="script.js"></script>
+</body>
+</html>

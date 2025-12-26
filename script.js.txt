@@ -1,0 +1,78 @@
+// script.js
+let menu = JSON.parse(localStorage.getItem('menu')) || [];
+let sales = JSON.parse(localStorage.getItem('sales')) || [];
+let cart = [];
+
+
+document.getElementById('roleText').innerText = localStorage.getItem('role');
+
+
+function save(){
+localStorage.setItem('menu', JSON.stringify(menu));
+localStorage.setItem('sales', JSON.stringify(sales));
+}
+
+
+function logout(){
+localStorage.clear();
+window.location.href='login.html';
+}
+
+
+function addItem(){
+if(!itemName.value || !itemPrice.value) return;
+menu.push({name:itemName.value, price:+itemPrice.value});
+save(); renderMenu();
+}
+
+
+function renderMenu(){
+menuList.innerHTML='';
+menu.forEach((m,i)=>{
+menuList.innerHTML+=`<li onclick="addToCart(${i})">${m.name} - ₹${m.price}</li>`;
+});
+}
+
+
+function addToCart(i){
+let f=cart.find(c=>c.name==menu[i].name);
+if(f) f.qty++;
+else cart.push({name:menu[i].name,price:menu[i].price,qty:1});
+renderCart();
+}
+
+
+function renderCart(){
+cartList.innerHTML='';
+cart.forEach(c=>{
+cartList.innerHTML+=`<li>${c.name} x ${c.qty}</li>`;
+});
+}
+
+
+function checkout(){
+let gst=+document.getElementById('gst').value;
+let sum=cart.reduce((a,b)=>a+(b.price*b.qty),0);
+let totalAmt=sum+(sum*gst/100);
+total.innerText='Total ₹'+totalAmt.toFixed(2);
+sales.push({amount:totalAmt,date:new Date().toISOString(),by:localStorage.getItem('role')});
+cart=[];
+save(); renderCart();
+}
+
+
+function filterSales(t){
+let now=new Date(), totalAmt=0;
+sales.forEach(s=>{
+let d=new Date(s.date);
+if(
+(t=='daily' && d.toDateString()==now.toDateString()) ||
+(t=='monthly' && d.getMonth()==now.getMonth()) ||
+(t=='yearly' && d.getFullYear()==now.getFullYear())
+) totalAmt+=s.amount;
+});
+dashboard.innerText=t.toUpperCase()+' SALES ₹'+totalAmt.toFixed(2);
+}
+
+
+renderMenu();
