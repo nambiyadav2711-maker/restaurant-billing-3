@@ -1,0 +1,39 @@
+// login.html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="center">
+<h2>Restaurant Login</h2>
+
+
+<select id="role">
+<option value="owner">Owner</option>
+<option value="staff">Staff</option>
+</select><br><br>
+
+
+<input id="user" placeholder="Username"><br>
+<input id="pass" type="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+<p id="msg"></p>
+
+
+<script>
+function login(){
+let r = role.value;
+if(
+(r==='owner' && user.value==='owner' && pass.value==='1234') ||
+(r==='staff' && user.value==='staff' && pass.value==='1111')
+){
+localStorage.setItem('role', r);
+window.location.href='billing.html';
+} else {
+msg.innerText='Invalid Credentials';
+}
+}
+</script>
+</body>
+</html>
